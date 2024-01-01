@@ -17,35 +17,36 @@ const { title } = Astro.props
     <title>{title}</title>
   </head>
   <body>
-    <slot />
+    <main id="app" class="relative h-screen p-3 gap-3">
+      <aside class="[grid-area:aside] flex flex-col overflow-y-auto">
+        aside
+      </aside>
+
+      <main class="[grid-area:main] bg-primary-dark rounded-lg overflow-y-auto">
+        main
+      </main>
+
+      <footer class="[grid-area:player] min-h-[72px]">player</footer>
+
+      <slot />
+    </main>
   </body>
 </html>
 <style is:global>
   :root {
-    --accent: 136, 58, 234;
-    --accent-light: 224, 204, 250;
-    --accent-dark: 49, 10, 101;
-    --accent-gradient: linear-gradient(
-      45deg,
-      rgb(var(--accent)),
-      rgb(var(--accent-light)) 30%,
-      white 60%
-    );
+    --black: #000;
   }
+
   html {
-    font-family: system-ui, sans-serif;
-    background: #13151a;
-    background-size: 224px;
+    background-color: var(--black);
   }
-  code {
-    font-family:
-      Menlo,
-      Monaco,
-      Lucida Console,
-      Liberation Mono,
-      DejaVu Sans Mono,
-      Bitstream Vera Sans Mono,
-      Courier New,
-      monospace;
+
+  #app {
+    display: grid;
+    grid-template-areas:
+      'aside main main'
+      'player player player';
+    grid-template-columns: 350px 1fr;
+    grid-template-rows: 1fr auto;
   }
 </style>
