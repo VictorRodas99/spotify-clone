@@ -1,0 +1,39 @@
+---
+import AsideMenuItem from '@components/AsideMenuItem.astro'
+import HomeIcon from '@icons/HomeIcon.astro'
+import SearchIcon from '@icons/SearchIcon.astro'
+import LibraryIcon from '@icons/LibraryIcon.astro'
+
+import { playlists } from '@lib/playlists'
+import ContentItem from './sections/aside-menu/ProfileContentItem.astro'
+---
+
+<nav class="flex flex-col gap-3 text-light h-full">
+  <div class="bg-primary-dark-100 p-4 rounded-lg">
+    <ul class="flex flex-col gap-6">
+      <AsideMenuItem href="/">
+        <HomeIcon />
+        Inicio
+      </AsideMenuItem>
+      <AsideMenuItem href="/">
+        <SearchIcon />
+        Buscar
+      </AsideMenuItem>
+    </ul>
+  </div>
+
+  <section
+    class="bg-primary-dark-100 flex flex-col gap-4 p-2 rounded-lg h-full"
+  >
+    <header class="p-2">
+      <div class="flex gap-3 font-bold">
+        <LibraryIcon />
+        Tu biblioteca
+      </div>
+    </header>
+
+    <ul class="flex flex-col gap-2">
+      {playlists.map((playlist) => <ContentItem playlist={playlist} />)}
+    </ul>
+  </section>
+</nav>
