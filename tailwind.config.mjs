@@ -18,7 +18,11 @@ export default {
 	theme: {
 		extend: {},
 		colors: {
-			'primary-dark': '#121212',
+			'primary-dark': {
+				50: '#1a1a1a',
+				100: '#121212'
+			},
+			'light': '#b3b3b3',
 			...colors // to get the default tailwind colors as well
 		}
 	},
