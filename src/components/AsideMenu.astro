@@ -4,7 +4,7 @@ import HomeIcon from '@icons/HomeIcon.astro'
 import SearchIcon from '@icons/SearchIcon.astro'
 import LibraryIcon from '@icons/LibraryIcon.astro'
 
-import { playlists } from '@lib/playlists'
+import { profileContent } from '@lib/profile-content'
 import ContentItem from './sections/aside-menu/ProfileContentItem.astro'
 ---
 
@@ -33,7 +33,7 @@ import ContentItem from './sections/aside-menu/ProfileContentItem.astro'
     </header>
 
     <ul class="flex flex-col gap-2">
-      {playlists.map((playlist) => <ContentItem playlist={playlist} />)}
+      {profileContent.map((data) => <ContentItem data={data} />)}
     </ul>
   </section>
 </nav>
