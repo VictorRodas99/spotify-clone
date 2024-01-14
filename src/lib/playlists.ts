@@ -1,9 +1,9 @@
-import type { Playlist, PlaylistSong } from './types/playlists'
+import type { Playlist, PlaylistSong } from './types/playlist'
 
 export const playlists: Playlist[] = [
   {
     id: '1',
-    title: '11',
+    name: '11',
     description: ': )',
     creator: 'Víctor Rodas',
     cover: '/images/playlists/playlist-11.jpg',
@@ -13,7 +13,7 @@ export const playlists: Playlist[] = [
   },
   {
     id: '2',
-    title: 'dreamy shoes',
+    name: 'dreamy shoes',
     description: '14',
     creator: 'Víctor Rodas',
     cover: '/images/playlists/playlist-dreamy-shoes.jpg',
@@ -27,31 +27,31 @@ export const playlistsSongs: PlaylistSong[] = [
   {
     id: 1,
     playlistId: '1',
-    title: 'Down the Line',
+    name: 'Down the Line',
     artists: ['Beach Fossils']
   },
   {
     id: 2,
     playlistId: '1',
-    title: 'This Year',
+    name: 'This Year',
     artists: ['Beach Fossils']
   },
   {
     id: 3,
     playlistId: '1',
-    title: 'back and forth',
+    name: 'back and forth',
     artists: ['Surf Rock Is Dead']
   },
   {
     id: 4,
     playlistId: '2',
-    title: 'El comienzo',
+    name: 'El comienzo',
     artists: ['La Suma de Todos los Tiempos']
   },
   {
     id: 5,
     playlistId: '2',
-    title: 'Quietud',
+    name: 'Quietud',
     artists: ['El Club Audiovisual']
   }
 ]
