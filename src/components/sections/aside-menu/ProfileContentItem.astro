@@ -33,9 +33,13 @@ const data = await mapProfileItem({ item: Astro.props.data })
         </div>
         <div>
           <h2 class="text-white">{data.name}</h2>
-          <p>
-            {data.internationalizedType} &#903; {data.author}
-          </p>
+          {data.type === 'artist' ? (
+            <p class="text-sm">{data.internationalizedType}</p>
+          ) : (
+            <p class="text-sm">
+              {data.internationalizedType} &#903; {data.author}
+            </p>
+          )}
         </div>
       </a>
     </li>
