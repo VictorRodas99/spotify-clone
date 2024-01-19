@@ -23,6 +23,7 @@ export default {
 				100: '#121212'
 			},
 			'light': '#b3b3b3',
+			'spotify-green': '#1ed760',
 			...colors // to get the default tailwind colors as well
 		}
 	},
