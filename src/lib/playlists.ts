@@ -1,4 +1,5 @@
 import type { Playlist, PlaylistSong } from './types/playlist'
+import { content } from './types/general'
 
 export const playlists: Playlist[] = [
   {
@@ -9,7 +10,7 @@ export const playlists: Playlist[] = [
     cover: '/images/playlists/playlist-11.jpg',
     likes: 14,
     tracks: 10,
-    type: 'playlist'
+    type: content.playlist
   },
   {
     id: '2',
@@ -19,7 +20,7 @@ export const playlists: Playlist[] = [
     cover: '/images/playlists/playlist-dreamy-shoes.jpg',
     likes: 3,
     tracks: 10,
-    type: 'playlist'
+    type: content.playlist
   }
 ]
 

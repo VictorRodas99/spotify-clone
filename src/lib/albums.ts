@@ -1,19 +1,20 @@
 import type { Album } from './types/general'
+import { content } from './types/general'
 
 export const albums: Album[] = [
   {
     name: 'm b v',
     artists: ['my bloody valentine'],
-    type: 'album'
+    type: content.album
   },
   {
     name: 'LSD and the Search for God',
     artists: ['LSD and the Search for God'],
-    type: 'album'
+    type: content.album
   },
   {
     name: 'Afrodisiac',
     artists: ['The Veldt'],
-    type: 'album'
+    type: content.album
   }
 ]
