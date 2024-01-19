@@ -1,3 +1,9 @@
+export const content = {
+  album: 'album',
+  playlist: 'playlist',
+  artist: 'artist'
+} as const
+
 export interface Album {
   name: string
   artists: string[]
