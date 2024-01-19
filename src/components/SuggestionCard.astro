@@ -1,0 +1,37 @@
+---
+import type { Playlist } from '@lib/types/playlist'
+import type { Album, Artist } from '@lib/types/general'
+import { mapProfileItem } from '@utils/formatters'
+import { Image } from 'astro:assets'
+import PlayIcon from '@icons/PlayIcon.astro'
+
+interface Props {
+  data: Playlist | Album | Artist
+}
+
+const data = await mapProfileItem({ item: Astro.props.data })
+---
+
+<!-- TODO: if null is given, render a skeleton -->{
+  data && (
+    <a
+      href={`${data.type}/${data.id}`}
+      class="relative group flex items-center bg-zinc-700/30 gap-2 rounded-md"
+    >
+      <picture>
+        <Image
+          src={data.image}
+          alt={data.name}
+          width={48}
+          height={48}
+          class="object-cover rounded-s-md"
+        />
+      </picture>
+
+      <h3 class="font-bold text-sm">{data.name}</h3>
+      <button class="absolute hidden group-hover:block hover:scale-110 transition-transform rounded-full text-black bg-spotify-green right-2 p-[2px] shadow-md">
+        <PlayIcon />
+      </button>
+    </a>
+  )
+}
