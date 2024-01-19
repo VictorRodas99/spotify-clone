@@ -1,0 +1,17 @@
+<h2 id="greeting" class="text-3xl font-bold">Buenos días</h2>
+
+<script>
+  import { getLocalHour } from '@utils/general'
+  import createGreeting from '@utils/client/greetings'
+
+  const greetingElement = document.querySelector('#greeting')
+
+  if (greetingElement instanceof HTMLElement) {
+    const currentTime = getLocalHour()
+    const greeting = createGreeting(currentTime)
+
+    greetingElement.textContent = greeting
+  }
+
+  console.error('Greeting element does not exists')
+</script>
