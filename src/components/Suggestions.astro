@@ -1,0 +1,8 @@
+---
+import { greetingsSection } from '@lib/suggestions'
+import SuggestionCard from './SuggestionCard.astro'
+---
+
+<div class="grid grid-cols-3 gap-2">
+  {greetingsSection.map((suggestion) => <SuggestionCard data={suggestion} />)}
+</div>
