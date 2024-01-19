@@ -8,7 +8,8 @@
       "@layouts/*": ["src/layouts/*"],
       "@pages/*": ["src/pages/*"],
       "@css/*": ["src/css/*"],
-      "@lib/*": ["src/lib/*"]
+      "@lib/*": ["src/lib/*"],
+      "@utils/*": ["src/utils/*"]
     }
   }
 }
