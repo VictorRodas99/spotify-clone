@@ -10,20 +10,22 @@ export const artistSchemaSimplified = z.object({
   picture_big: z.string(),
   picture_xl: z.string(),
   tracklist: z.string(),
-  type: z.string()
+  type: z.literal('artist')
 })
 
 export type ArtistAlbumProperty = z.infer<typeof artistSchemaSimplified>
+
+export const recordTypeSchema = z.enum(['ep', 'album', 'single'])
 
 export const albumSchema = z.object({
   id: z.number(),
   title: z.string(),
   link: z.string(),
   cover: z.string(),
-  cover_small: z.string(),
-  cover_medium: z.string(),
-  cover_big: z.string(),
-  cover_xl: z.string(),
+  cover_small: z.union([z.null(), z.string()]),
+  cover_medium: z.union([z.null(), z.string()]),
+  cover_big: z.union([z.null(), z.string()]),
+  cover_xl: z.union([z.null(), z.string()]),
   md5_image: z.string(),
   genre_id: z.number(),
   nb_tracks: z.number(),
@@ -31,7 +33,7 @@ export const albumSchema = z.object({
   tracklist: z.string(),
   explicit_lyrics: z.boolean(),
   artist: artistSchemaSimplified,
-  type: z.string()
+  type: recordTypeSchema
 })
 
 export type Album = z.infer<typeof albumSchema>
