@@ -5,11 +5,15 @@ import ArrowRightIcon from '@icons/ArrowRightIcon.astro'
 import NotificationIcon from '@icons/NotificationIcon.astro'
 import Greetings from '@components/Greetings.astro'
 import Suggestions from '@components/Suggestions.astro'
+import Card from '@components/Card.astro'
+
+import { secondSection } from '@lib/suggestions'
 ---
 
 <Layout title="Welcome to Astro.">
   <div
-    class="absolute inset-0 bg-gradient-to-t from-primary-dark-50 via-primary-dark-100/80"
+    class="absolute inset-0 h-[300px] bg-gradient-to-t from-primary-dark-100 via-context"
+    style=";--context-color:#134e4a;"
   >
   </div>
 
@@ -33,8 +37,18 @@ import Suggestions from '@components/Suggestions.astro'
     </section>
   </header>
 
-  <section class="flex flex-col gap-4 z-10">
+  <section
+    id="greetings-section"
+    class="flex flex-col gap-4 transition-all duration-1000 z-10"
+  >
     <Greetings />
     <Suggestions />
+  </section>
+
+  <section class="mt-5 flex flex-col gap-4 z-10">
+    <h2 class="text-2xl font-bold">Vuelve a tu música</h2>
+    <ul class="grid grid-cols-4 gap-6">
+      {secondSection.map((suggestion) => <Card data={suggestion} />)}
+    </ul>
   </section>
 </Layout>
