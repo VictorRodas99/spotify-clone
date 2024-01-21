@@ -46,7 +46,7 @@ export const secondSection: Album[] = [
   },
   {
     name: 'The Bends',
-    artists: ['Rediohead'],
+    artists: ['Radiohead'],
     type: content.album
   },
   {
