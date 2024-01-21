@@ -16,17 +16,21 @@ const data = await mapProfileItem({ item: Astro.props.data })
   data && (
     <a
       href={`${data.type}/${data.id}`}
-      class="relative group flex items-center bg-zinc-700/30 gap-2 rounded-md"
+      class="relative group flex items-center bg-zinc-800/60 gap-2 rounded-md hover:bg-zinc-600 transition-colors"
     >
-      <picture>
-        <Image
-          src={data.image}
-          alt={data.name}
-          width={48}
-          height={48}
-          class="object-cover rounded-s-md"
-        />
-      </picture>
+      {data.image ? (
+        <picture>
+          <Image
+            src={data.image}
+            alt={data.name}
+            width={48}
+            height={48}
+            class="object-cover rounded-s-md"
+          />
+        </picture>
+      ) : (
+        <div class="h-full w-full bg-gray-500" />
+      )}
 
       <h3 class="font-bold text-sm">{data.name}</h3>
       <button class="absolute hidden group-hover:block hover:scale-110 transition-transform rounded-full text-black bg-spotify-green right-2 p-[2px] shadow-md">
