@@ -5,9 +5,11 @@ import ArrowRightIcon from '@icons/ArrowRightIcon.astro'
 import NotificationIcon from '@icons/NotificationIcon.astro'
 import Greetings from '@components/Greetings.astro'
 import Suggestions from '@components/Suggestions.astro'
-import Card from '@components/Card.astro'
+import Cards from '@components/Cards.astro'
+import Title from '@components/CardsTitle.astro'
 
 import { secondSection } from '@lib/suggestions'
+import { playlists } from '@lib/playlists'
 ---
 
 <Layout title="Welcome to Astro.">
@@ -45,10 +47,13 @@ import { secondSection } from '@lib/suggestions'
     <Suggestions />
   </section>
 
-  <section class="mt-5 flex flex-col gap-4 z-10">
-    <h2 class="text-2xl font-bold">Vuelve a tu música</h2>
-    <ul class="grid grid-cols-4 gap-6">
-      {secondSection.map((suggestion) => <Card data={suggestion} />)}
-    </ul>
-  </section>
+  <div class="mt-5 flex flex-col gap-10">
+    <Cards data={secondSection}>
+      <Title>Vuelve a tu música</Title>
+    </Cards>
+
+    <Cards data={playlists}>
+      <Title>Tus Playlists</Title>
+    </Cards>
+  </div>
 </Layout>
