@@ -1,0 +1,18 @@
+---
+import type { Album } from '@lib/types/general'
+import type { Playlist } from '@lib/types/playlist'
+import Card from '@components/Card.astro'
+
+interface Props {
+  data: Playlist[] | Album[]
+}
+
+const { data } = Astro.props
+---
+
+<section class="flex flex-col gap-4 z-10">
+  <slot />
+  <ul class="grid grid-cols-4 gap-6">
+    {data.map((element) => <Card data={element} />)}
+  </ul>
+</section>
