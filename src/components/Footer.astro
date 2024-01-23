@@ -1,0 +1,104 @@
+---
+import InstagramIcon from '@icons/socials/InstagramIcon.astro'
+import FacebookIcon from '@icons/socials/FacebookIcon.astro'
+import TwitterIcon from '@icons/socials/TwitterIcon.astro'
+import SocialIcon from '@components/sections/footer/SocialsIcon.astro'
+import FooterItem from './sections/footer/FooterItem.astro'
+---
+
+<footer class="mt-[70px] flex flex-col gap-8">
+  <section class="flex justify-between">
+    <div class="grid grid-cols-2 w-[60%] justify-between">
+      <div class="flex flex-col gap-[5px]">
+        <h4 class="font-bold">Compañía</h4>
+        <ul class="text-light flex flex-col gap-[5px]">
+          <FooterItem href="https://spotify.com/about-us/contact">
+            Acerca de
+          </FooterItem>
+          <FooterItem href="https://www.lifeatspotify.com/">Empleo</FooterItem>
+          <FooterItem href="https://newsroom.spotify.com/">
+            For the Record
+          </FooterItem>
+        </ul>
+      </div>
+      <div class="flex flex-col gap-[5px]">
+        <h4 class="font-bold">Comunidades</h4>
+        <ul class="text-light flex flex-col gap-[5px]">
+          <FooterItem href="https://artists.spotify.com/">
+            Para artistas
+          </FooterItem>
+          <FooterItem href="https://developer.spotify.com/">
+            Desarrolladores
+          </FooterItem>
+          <FooterItem href="https://ads.spotify.com/en-US/">
+            Publicidad
+          </FooterItem>
+          <FooterItem href="https://investors.spotify.com/home/default.aspx">
+            Inversionistas
+          </FooterItem>
+          <FooterItem href="https://spotifyforvendors.com/">
+            Proveedores
+          </FooterItem>
+        </ul>
+      </div>
+      <div class="flex flex-col gap-[5px]">
+        <h4 class="font-bold">Enlaces útiles</h4>
+        <ul class="text-light flex flex-col gap-[5px]">
+          <FooterItem href="https://support.spotify.com/">Ayuda</FooterItem>
+          <FooterItem href="https://www.spotify.com/download/">
+            App móvil gratis
+          </FooterItem>
+        </ul>
+      </div>
+    </div>
+    <div>
+      <ul class="flex gap-2">
+        <SocialIcon href="https://instagram.com/spotify">
+          <InstagramIcon />
+        </SocialIcon>
+
+        <SocialIcon href="https://twitter.com/spotify">
+          <TwitterIcon />
+        </SocialIcon>
+
+        <SocialIcon href="https://facebook.com/Spotify">
+          <FacebookIcon />
+        </SocialIcon>
+      </ul>
+    </div>
+  </section>
+  <section class="p-9 border-t-2 border-primary-dark-50">
+    <ul class="flex justify-center items-center gap-5 text-sm text-light">
+      <FooterItem href="https://spotify.com/legal" underline={false}>
+        Legal
+      </FooterItem>
+      <FooterItem href="https://spotify.com/privacy" underline={false}>
+        Centro de privacidad
+      </FooterItem>
+      <FooterItem
+        href="https://spotify.com/legal/privacy-policy"
+        underline={false}
+      >
+        Política de privacidad
+      </FooterItem>
+      <FooterItem
+        href="https://spotify.com/legal/cookies-policy"
+        underline={false}
+      >
+        Cookies
+      </FooterItem>
+      <FooterItem
+        href="https://www.spotify.com/legal/privacy-policy/#s3"
+        underline={false}
+      >
+        Sobre los anuncios
+      </FooterItem>
+      <FooterItem
+        href="https://www.spotify.com/py/accessibility"
+        underline={false}
+      >
+        Accesibilidad
+      </FooterItem>
+    </ul>
+  </section>
+</footer>
