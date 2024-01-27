@@ -9,6 +9,11 @@ import {
   type APIResponseArtist,
   type Artist
 } from './validations/artist.zod'
+import {
+  apiResponseSingleAlbumSchema,
+  type APIResponseSingleAlbum
+} from './validations/single-album.zod'
+import { apiResponseNotFoundSchema } from './validations/not-found.zod'
 
 export const getMainCoincidence = <T>(
   data: T[],
@@ -18,6 +23,61 @@ export const getMainCoincidence = <T>(
   const [mainResult] = results
 
   return mainResult
+}
+
+export async function getAlbumById({ id }: { id: number }) {
+  if (isNaN(id)) {
+    console.error('Expected id to be a valid number')
+    return null
+  }
+
+  const response = await fetch(`${API_URL}/album/${id}`)
+
+  if (!response.ok) {
+    console.error(`Cannot fetch album with id ${id}`)
+    return null // TODO: return { status: 'not found', data: null }
+  }
+
+  const apiResponse = (await response.json()) as APIResponseSingleAlbum
+
+  const parsedResult = apiResponseSingleAlbumSchema.safeParse(apiResponse)
+
+  if (!parsedResult.success) {
+    const notFound = apiResponseNotFoundSchema.safeParse(apiResponse)
+
+    if (notFound.success) {
+      return null
+    }
+
+    throw new Error(
+      `Error parsing the JSON while fetching album with id "${id}"`
+    )
+  }
+
+  const album = parsedResult.data
+
+  return {
+    title: album.title,
+    coverBig: album.cover_big,
+    type: album.type,
+    artist: {
+      id: album.artist.id,
+      name: album.artist.name,
+      pictureSmall: album.artist.picture_small
+    },
+    releaseDate: album.release_date,
+    numberOfTracks: album.nb_tracks,
+    durationSeconds: album.duration,
+    tracks: album.tracks.data.map((track) => ({
+      id: track.id,
+      title: track.title,
+      durationSeconds: track.duration,
+      explicitLyrics: track.explicit_lyrics,
+      songPreview: track.preview,
+      artist: track.artist.name
+    })),
+    label: album.label
+  }
 }
 
 export async function getAlbumBy({
