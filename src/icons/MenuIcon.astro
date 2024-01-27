@@ -8,10 +8,14 @@ const { className, size } = Astro.props
 ---
 
 <svg
+  role="img"
+  aria-hidden="true"
   viewBox="0 0 24 24"
   width={size ?? 28}
   height={size ?? 28}
   fill="currentColor"
   class={className}
-  ><path fill="currentColor" d="M8 5.14v14l11-7-11-7z"></path></svg
+  ><path
+    d="M4.5 13.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm15 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm-7.5 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"
+  ></path></svg
 >
