@@ -1,0 +1,157 @@
+---
+import Layout from '@layouts/Layout.astro'
+import { getAlbumById } from 'src/services/main'
+import { Image } from 'astro:assets'
+import '@css/bg-noise.css'
+
+import Vibrant from 'node-vibrant'
+import PlayIcon from '@icons/PlayIcon.astro'
+import HeartIcon from '@icons/HeartIcon.astro'
+import MenuIcon from '@icons/MenuIcon.astro'
+import MenuIconTwo from '@icons/MenuIconTwo.astro'
+import ClockIcon from '@icons/ClockIcon.astro'
+import { formatSeconds } from '@utils/general'
+// import BackgroundColor from '@components/sections/playlist/Background'
+
+const album = await getAlbumById({ id: Number(Astro.params.id) })
+
+if (!album) {
+  return Astro.redirect('/not-found')
+}
+
+const vibrant = new Vibrant(album.coverBig)
+const palette = await vibrant.getPalette()
+
+const mainDarkColor = {
+  red: palette.DarkVibrant?.rgb[0] ?? 24,
+  green: palette.DarkVibrant?.rgb[1] ?? 24,
+  blue: palette.DarkMuted?.rgb[2] ?? 24
+}
+---
+
+<Layout title={`${album.title} - Álbum de ${album.artist.name}`}>
+  <div
+    class="absolute inset-0 h-[320px] bg-context"
+    style={`--context-color: rgb(${mainDarkColor.red}, ${mainDarkColor.green}, ${mainDarkColor.blue})`}
+  >
+  </div>
+  <div class="bg-noise w-full h-full absolute inset-0"></div>
+  <!-- <BackgroundColor coverSource={album.coverBig} client:visible /> -->
+  <div class="flex flex-col">
+    <section class="flex gap-6 z-10 py-5">
+      <picture>
+        <Image
+          src={album.coverBig}
+          class="object-cover rounded-md"
+          width={208}
+          height={208}
+          alt={`Cover de ${album.title}`}
+        />
+      </picture>
+
+      <div class="flex flex-col justify-end">
+        <span class="text-sm">Álbum</span>
+
+        <h1 class="text-8xl font-[900] mb-3 tracking-tighter">
+          {album.title}
+        </h1>
+
+        <div class="flex items-center gap-2 text-sm">
+          <picture>
+            <Image
+              src={album.artist.pictureSmall}
+              class="object-cover rounded-full"
+              width={24}
+              height={24}
+              alt=`Imagen de ${album.artist.name}`
+            />
+          </picture>
+
+          <h4 class="font-bold">{album.artist.name}</h4>
+          <span class="text-[9px]">&bull;</span>
+
+          <p>{new Date(album.releaseDate).getFullYear()}</p>
+          <span class="text-[9px]">&bull;</span>
+          <span>{album.numberOfTracks} canciones,</span>
+          <span
+            >{formatSeconds(album.durationSeconds, { stringify: true })}</span
+          >
+        </div>
+      </div>
+    </section>
+    <section class="z-10 py-6">
+      <div class="w-full flex justify-between">
+        <!-- menu, player -->
+        <div class="flex gap-7">
+          <button
+            class="w-14 h-14 hover:scale-110 transition-transform rounded-full text-black bg-spotify-green p-[2px] shadow-md"
+          >
+            <PlayIcon className="block m-auto" size={32} />
+          </button>
+          <button class="text-spotify-green">
+            <HeartIcon size={32} />
+          </button>
+
+          <button class="text-light">
+            <MenuIcon size={32} />
+          </button>
+        </div>
+
+        <button
+          class="text-light text-sm flex justify-center items-center gap-2"
+        >
+          Lista
+          <MenuIconTwo size={16} />
+        </button>
+      </div>
+      <div class="py-5 flex flex-col gap-4">
+        <!-- songs -->
+        <header
+          class="text-light flex justify-between text-sm border-b-[1px] px-5 py-2 border-primary-dark-50"
+        >
+          <div class="flex items-center gap-4">
+            <span class="text-lg">#</span>
+            <h4>Título</h4>
+          </div>
+          <span>
+            <ClockIcon size={16} />
+          </span>
+        </header>
+        <div>
+          <ul>
+            {
+              album.tracks.map((track, index) => (
+                <li class="flex items-center gap-5 px-5 py-2 hover:bg-primary-dark-50 group rounded-md">
+                  <div class="h-full min-w-[25px] text-center grid items-center">
+                    <span class="text-light group-hover:hidden">
+                      {index + 1}
+                    </span>
+                    <span class="hidden group-hover:block">
+                      <PlayIcon size={22} />
+                    </span>
+                  </div>
+
+                  <div class="w-full flex justify-between">
+                    <div>
+                      <p>{track.title}</p>
+                      <p class="text-light text-sm">{track.artist}</p>
+                    </div>
+
+                    <div class="flex items-center gap-2">
+                      <span class="text-sm text-light">
+                        {formatSeconds(track.durationSeconds)}
+                      </span>
+                      <button class="invisible group-hover:visible">
+                        <MenuIcon size={24} />
+                      </button>
+                    </div>
+                  </div>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
+    </section>
+  </div>
+</Layout>
