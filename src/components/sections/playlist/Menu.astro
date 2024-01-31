@@ -1,0 +1,40 @@
+---
+import PlayIcon from '@icons/PlayIcon.astro'
+import HeartIcon from '@icons/HeartIcon.astro'
+import MenuIcon from '@icons/MenuIcon.astro'
+import MenuIconTwo from '@icons/MenuIconTwo.astro'
+
+interface Props {
+  section: 'playlist' | 'album'
+}
+
+const { section } = Astro.props
+---
+
+<div class="w-full flex justify-between">
+  <!-- menu, player -->
+  <div class="flex gap-7">
+    <button
+      class="w-14 h-14 hover:scale-110 transition-transform rounded-full text-black bg-spotify-green p-[2px] shadow-md"
+    >
+      <PlayIcon className="block m-auto" size={32} />
+    </button>
+
+    {
+      section === 'album' && (
+        <button class="text-spotify-green">
+          <HeartIcon size={32} />
+        </button>
+      )
+    }
+
+    <button class="text-light">
+      <MenuIcon size={32} />
+    </button>
+  </div>
+
+  <button class="text-light text-sm flex justify-center items-center gap-2">
+    Lista
+    <MenuIconTwo size={16} />
+  </button>
+</div>
