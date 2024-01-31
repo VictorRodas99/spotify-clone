@@ -9,7 +9,7 @@ export interface Album {
   artists: string[]
   type: 'album'
   // the songs are going to be fetched, not hardcoded
-  // the data (date release, time, cover, etc) are going to be fetched as well
+  // the data (date release, time, cover, etc) is going to be fetched as well
 }
 
 export interface Artist {
