@@ -1,0 +1,23 @@
+---
+/* Server side only to bypass CORS error */
+
+import { getPaletteFromImage } from '@utils/general'
+import '@css/bg-noise.css'
+
+interface Props {
+  coverSource: string
+}
+
+const { coverSource } = Astro.props
+const { secondaryDarkColor } = await getPaletteFromImage({
+  source: coverSource,
+  colorFallback: '#121212'
+})
+---
+
+<div
+  class="absolute inset-0 h-[320px] bg-context"
+  style={`--context-color: ${secondaryDarkColor}`}
+>
+</div>
+<div class="bg-noise w-full h-full absolute inset-0"></div>
