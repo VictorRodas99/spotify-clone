@@ -16,3 +16,22 @@ export interface Artist {
   name: string
   type: 'artist'
 }
+
+export interface Song {
+  id: number
+  title: string
+  songPreview: string
+  artist: string
+  album: {
+    id: number
+    title: string
+    type: string
+    coverSmall: string
+    coverMedium: string
+    coverBig: string
+    coverXL: string
+  }
+  durationSeconds: number
+  type: string
+  explicitLyrics: boolean
+}
