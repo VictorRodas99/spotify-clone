@@ -14,6 +14,11 @@ import {
   type APIResponseSingleAlbum
 } from './validations/single-album.zod'
 import { apiResponseNotFoundSchema } from './validations/not-found.zod'
+import {
+  apiResponseSongSchema,
+  type APIResponseSong,
+  type Song
+} from './validations/song.zod'
 
 export const getMainCoincidence = <T>(
   data: T[],
@@ -71,10 +76,20 @@ export async function getAlbumById({ id }: { id: number }) {
     tracks: album.tracks.data.map((track) => ({
       id: track.id,
       title: track.title,
-      durationSeconds: track.duration,
-      explicitLyrics: track.explicit_lyrics,
       songPreview: track.preview,
-      artist: track.artist.name
+      artist: track.artist.name,
+      type: track.type,
+      album: {
+        id: track.album.id,
+        title: track.album.title,
+        type: track.album.type,
+        coverSmall: track.album.cover_small,
+        coverMedium: track.album.cover_medium,
+        coverBig: track.album.cover_big,
+        coverXL: track.album.cover_xl
+      },
+      durationSeconds: track.duration,
+      explicitLyrics: track.explicit_lyrics
     })),
     label: album.label
   }
@@ -187,5 +202,68 @@ export async function getArtistByName(name: string) {
     pictureMedium: artist.picture_medium,
     pictureBig: artist.picture_big,
     pictureXl: artist.picture_xl
+  }
+}
+
+export async function getSongBy({
+  title,
+  artist
+}: {
+  title: string
+  artist: string
+}) {
+  if (typeof title !== 'string' || typeof artist !== 'string') {
+    console.error('Expected params to be strings')
+    return null
+  }
+
+  const response = await fetch(
+    `${API_URL}/search?q=artist:"${artist}" track:"${title}"&limit=5`
+  )
+
+  if (!response.ok) {
+    console.error(`Cannot fetch song ${title} - ${artist}`)
+    return null
+  }
+
+  const apiResponse = (await response.json()) as APIResponseSong
+
+  const parsedResult = apiResponseSongSchema.safeParse(apiResponse)
+
+  if (!parsedResult.success) {
+    throw new Error(`Error parsing the JSON while fetching song "${title}"`)
+  }
+
+  const { data: relatedSongs } = parsedResult.data
+
+  const song = getMainCoincidence<Song>(
+    relatedSongs,
+    (song) => song.title.toLocaleLowerCase() === title.toLocaleLowerCase()
+  )
+
+  if (!song) {
+    console.error(
+      `SONG ERROR: Cannot retrieve a result that matches "${title}" in the given filter`
+    )
+    return null
+  }
+
+  return {
+    id: song.id,
+    title: song.title,
+    songPreview: song.preview,
+    artist: song.artist.name,
+    album: {
+      title: song.album.title,
+      type: song.album.type,
+      id: song.album.id,
+      coverSmall: song.album.cover_small,
+      coverMedium: song.album.cover_medium,
+      coverBig: song.album.cover_big,
+      coverXL: song.album.cover_xl
+    },
+    durationSeconds: song.duration,
+    type: song.type,
+    explicitLyrics: song.explicit_lyrics
   }
 }
