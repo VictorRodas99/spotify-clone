@@ -1,0 +1,77 @@
+---
+import { playlists, playlistsSongs } from '@lib/playlists'
+import Layout from '@layouts/Layout.astro'
+import Background from '@components/sections/playlist/Background'
+import { getSongBy } from 'src/services/main'
+import { Image } from 'astro:assets'
+import Menu from '@components/sections/playlist/Menu.astro'
+import SongListHeader from '@components/sections/playlist/SongListHeader.astro'
+import Songs from '@components/sections/playlist/Songs.astro'
+
+const playlist = playlists.find((playlist) => playlist.id === Astro.params.id)
+
+if (!playlist) {
+  return Astro.redirect('/not-found')
+}
+
+const songsSimplifiedData = playlistsSongs.filter(
+  (song) => song.playlistId === playlist.id
+)
+
+const songsSettledResults = await Promise.allSettled(
+  songsSimplifiedData.map((song) =>
+    getSongBy({ title: song.name, artist: song.artists.join(', ') })
+  )
+)
+
+const songs = songsSettledResults.map((result) =>
+  result.status === 'fulfilled' ? result.value : null
+)
+---
+
+<Layout title="">
+  <Background coverSource={playlist.cover} client:visible />
+  <div class="flex flex-col">
+    <section class="flex gap-6 z-10 py-5">
+      <picture>
+        <Image
+          src={playlist.cover}
+          class="object-cover rounded-md"
+          width={208}
+          height={208}
+          alt={`Cover de ${playlist.name}`}
+        />
+      </picture>
+
+      <div class="flex flex-col justify-end">
+        <span class="text-sm">Playlist</span>
+
+        <h1 class="text-8xl font-[900] mb-3 tracking-tighter">
+          {playlist.name}
+        </h1>
+
+        <p class="text-light">{playlist.description}</p>
+
+        <div class="flex items-center gap-2 text-sm">
+          <h4 class="font-bold">{playlist.creator}</h4>
+          <span class="text-[9px]">&bull;</span>
+
+          <p>{playlist.likes}</p>
+          <span class="text-[9px]">&bull;</span>
+          <span>{playlist.tracks} canciones,</span>
+          <span>Cerca de 6h</span>
+        </div>
+      </div>
+    </section>
+    <section class="z-10 py-6">
+      <Menu section="playlist" />
+      <div class="py-5 flex flex-col gap-4">
+        <!-- songs -->
+        <SongListHeader />
+        <div>
+          <Songs songs={songs} />
+        </div>
+      </div>
+    </section>
+  </div>
+</Layout>
