@@ -1,0 +1,78 @@
+---
+import type { Playlist } from '@lib/types/playlist'
+import type { Album } from '@lib/types/general'
+import { formatSeconds } from '@utils/general'
+import { Image } from 'astro:assets'
+
+interface Props {
+  data: Playlist | Album
+}
+
+const internationalizedType = {
+  playlist: 'Playlist',
+  album: 'Álbum'
+}
+
+const { data } = Astro.props
+const isAlbum = data.type === 'album'
+
+const mappedData = {
+  title: isAlbum ? data.title : data.name,
+  description: isAlbum ? undefined : data.description,
+  creator: isAlbum ? data.artist.name : data.creator,
+  secondaryInformation: isAlbum
+    ? new Date(data.releaseDate).getFullYear()
+    : data.likes,
+  numberOfTracks: isAlbum ? data.numberOfTracks : data.tracks,
+  durationSeconds: isAlbum ? data.durationSeconds : 0
+}
+---
+
+<section class="flex gap-6 z-10 py-5">
+  <slot name="main-image" />
+
+  <div class="flex flex-col justify-end">
+    <span class="text-sm">{internationalizedType[data.type]}</span>
+
+    <h1 class="text-8xl font-[900] mb-3 tracking-tighter">
+      {mappedData.title}
+    </h1>
+
+    {
+      mappedData.description && (
+        <p class="text-light">{mappedData.description}</p>
+      )
+    }
+
+    <div class="flex items-center gap-2 text-sm">
+      {
+        isAlbum && (
+          <picture>
+            <Image
+              src={data.artist.pictureSmall}
+              class="object-cover rounded-full"
+              width={24}
+              height={24}
+              alt={`Imagen de ${data.artist.name}`}
+            />
+          </picture>
+        )
+      }
+
+      <h4 class="font-bold">{mappedData.creator}</h4>
+      <span class="text-[9px]">&bull;</span>
+
+      <p>{mappedData.secondaryInformation}</p>
+      <span class="text-[9px]">&bull;</span>
+
+      <span>{mappedData.numberOfTracks} canciones,</span>
+      <span
+        >{
+          mappedData.durationSeconds === 0
+            ? 'Cerca de 6h' // TODO: if playlist, get the total duration with a calculation with fetched songs
+            : formatSeconds(mappedData.durationSeconds, { stringify: true })
+        }</span
+      >
+    </div>
+  </div>
+</section>

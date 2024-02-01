@@ -1,15 +1,16 @@
 ---
 import Layout from '@layouts/Layout.astro'
 import { getAlbumById } from 'src/services/main'
-import { Image } from 'astro:assets'
-
-import { formatSeconds } from '@utils/general'
 import BackgroundColor from '@components/sections/playlist/Background.astro'
 import Menu from '@components/sections/playlist/Menu.astro'
 import Songs from '@components/sections/playlist/Songs.astro'
 import SongListHeader from '@components/sections/playlist/SongListHeader.astro'
+import Container from '@components/sections/playlist/layout/Container.astro'
+import Hero from '@components/sections/playlist/layout/Hero.astro'
+import type { Album } from '@lib/types/general'
+import MainImage from '@components/sections/playlist/MainImage.astro'
 
-const album = await getAlbumById({ id: Number(Astro.params.id) })
+const album = (await getAlbumById({ id: Number(Astro.params.id) })) as Album
 
 if (!album) {
   return Astro.redirect('/not-found')
@@ -18,48 +19,14 @@ if (!album) {
 
 <Layout title={`${album.title} - Álbum de ${album.artist.name}`}>
   <BackgroundColor coverSource={album.coverBig} />
-  <div class="flex flex-col">
-    <section class="flex gap-6 z-10 py-5">
-      <picture>
-        <Image
-          src={album.coverBig}
-          class="object-cover rounded-md"
-          width={208}
-          height={208}
-          alt={`Cover de ${album.title}`}
-        />
-      </picture>
-
-      <div class="flex flex-col justify-end">
-        <span class="text-sm">Álbum</span>
-
-        <h1 class="text-8xl font-[900] mb-3 tracking-tighter">
-          {album.title}
-        </h1>
-
-        <div class="flex items-center gap-2 text-sm">
-          <picture>
-            <Image
-              src={album.artist.pictureSmall}
-              class="object-cover rounded-full"
-              width={24}
-              height={24}
-              alt=`Imagen de ${album.artist.name}`
-            />
-          </picture>
-
-          <h4 class="font-bold">{album.artist.name}</h4>
-          <span class="text-[9px]">&bull;</span>
-
-          <p>{new Date(album.releaseDate).getFullYear()}</p>
-          <span class="text-[9px]">&bull;</span>
-          <span>{album.numberOfTracks} canciones,</span>
-          <span
-            >{formatSeconds(album.durationSeconds, { stringify: true })}</span
-          >
-        </div>
-      </div>
-    </section>
+  <Container>
+    <Hero data={album}>
+      <MainImage
+        src={album.coverBig}
+        alt=`Cover de ${album.title}`
+        slot="main-image"
+      />
+    </Hero>
     <section class="z-10 py-6">
       <Menu section="album" />
       <div class="py-5 flex flex-col gap-4">
@@ -70,5 +37,5 @@ if (!album) {
         </div>
       </div>
     </section>
-  </div>
+  </Container>
 </Layout>
