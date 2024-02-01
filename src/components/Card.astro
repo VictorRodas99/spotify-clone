@@ -1,10 +1,10 @@
 ---
 import type { Playlist } from '@lib/types/playlist'
-import type { Album } from '@lib/types/general'
+import type { SimplifiedAlbum } from '@lib/types/general'
 import { mapProfileItem } from '@utils/formatters'
 
 interface Props {
-  data: Playlist | Album
+  data: Playlist | SimplifiedAlbum
 }
 
 const data = await mapProfileItem({ item: Astro.props.data })

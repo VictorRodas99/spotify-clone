@@ -1,11 +1,11 @@
 import type { Playlist } from './types/playlist'
-import type { Album, Artist } from './types/general'
+import type { SimplifiedAlbum, Artist } from './types/general'
 import { playlists } from './playlists'
 import { content } from './types/general'
 
 const [firstPlaylist, secondPlaylist] = playlists
 
-export const greetingsSection: (Playlist | Album | Artist)[] = [
+export const greetingsSection: (Playlist | SimplifiedAlbum | Artist)[] = [
   {
     name: 'Dream, Ivory',
     artists: ['Dream, Ivory'],
@@ -33,7 +33,7 @@ export const greetingsSection: (Playlist | Album | Artist)[] = [
   }
 ]
 
-export const secondSection: Album[] = [
+export const secondSection: SimplifiedAlbum[] = [
   {
     name: 'loveless',
     artists: ['my bloody valentine'],

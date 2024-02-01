@@ -1,10 +1,10 @@
 ---
-import type { Album } from '@lib/types/general'
+import type { SimplifiedAlbum } from '@lib/types/general'
 import type { Playlist } from '@lib/types/playlist'
 import Card from '@components/Card.astro'
 
 interface Props {
-  data: Playlist[] | Album[]
+  data: Playlist[] | SimplifiedAlbum[]
 }
 
 const { data } = Astro.props

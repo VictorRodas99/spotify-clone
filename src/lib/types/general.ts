@@ -4,7 +4,7 @@ export const content = {
   artist: 'artist'
 } as const
 
-export interface Album {
+export interface SimplifiedAlbum {
   name: string
   artists: string[]
   type: 'album'
@@ -34,4 +34,20 @@ export interface Song {
   durationSeconds: number
   type: string
   explicitLyrics: boolean
+}
+
+export interface Album {
+  title: string
+  coverBig: string
+  type: 'album'
+  artist: {
+    id: number
+    name: string
+    pictureSmall: string
+  }
+  releaseDate: string
+  numberOfTracks: number
+  durationSeconds: number
+  tracks: Song[]
+  label: string
 }

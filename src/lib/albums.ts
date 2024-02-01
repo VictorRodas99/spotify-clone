@@ -1,7 +1,7 @@
-import type { Album } from './types/general'
+import type { SimplifiedAlbum } from './types/general'
 import { content } from './types/general'
 
-export const albums: Album[] = [
+export const albums: SimplifiedAlbum[] = [
   {
     name: 'm b v',
     artists: ['my bloody valentine'],
