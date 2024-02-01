@@ -1,11 +1,11 @@
 import type { Playlist } from '@lib/types/playlist'
-import type { Album, Artist } from '@lib/types/general'
+import type { SimplifiedAlbum, Artist } from '@lib/types/general'
 import { getAlbumBy, getArtistByName } from 'src/services/main'
 
 export async function mapProfileItem({
   item
 }: {
-  item: Playlist | Album | Artist
+  item: Playlist | SimplifiedAlbum | Artist
 }) {
   // TODO: validate data param with zod
 
