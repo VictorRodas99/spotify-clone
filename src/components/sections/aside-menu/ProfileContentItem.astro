@@ -1,11 +1,11 @@
 ---
 import type { Playlist } from '@lib/types/playlist'
-import type { Album, Artist } from '@lib/types/general'
+import type { SimplifiedAlbum, Artist } from '@lib/types/general'
 import { Image } from 'astro:assets'
 import { mapProfileItem } from '../../../utils/formatters'
 
 interface Props {
-  data: Playlist | Album | Artist
+  data: Playlist | SimplifiedAlbum | Artist
 }
 
 const data = await mapProfileItem({ item: Astro.props.data })
@@ -27,7 +27,7 @@ const data = await mapProfileItem({ item: Astro.props.data })
             ]}
             width={50}
             height={50}
-            src={data.image}
+            src={data.image ?? ''}
             alt={`${data.name}-${data.type}-cover`}
           />
         </div>
