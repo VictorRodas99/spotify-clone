@@ -54,5 +54,11 @@ export const playlistsSongs: PlaylistSong[] = [
     playlistId: '2',
     name: 'Quietud',
     artists: ['El Club Audiovisual']
+  },
+  {
+    id: 6,
+    playlistId: '2',
+    name: 'Grapes',
+    artists: ['Ovlov']
   }
 ]
