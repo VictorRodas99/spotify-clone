@@ -1,15 +1,41 @@
 ---
 import ClockIcon from '@icons/ClockIcon.astro'
+
+interface Props {
+  section?: 'playlist' | 'album'
+}
+
+const { section } = Astro.props
+const isPlaylist = section === 'playlist'
 ---
 
 <header
-  class="text-light flex justify-between text-sm border-b-[1px] px-5 py-2 border-primary-dark-50"
+  class:list={[
+    'text-light grid w-full text-sm border-b-[1px] px-5 py-2 border-primary-dark-50',
+    { 'grid-cols-3': isPlaylist, 'grid-cols-2': !isPlaylist }
+  ]}
 >
-  <div class="flex items-center gap-4">
+  <div class="flex items-center gap-5 px-2">
     <span class="text-lg">#</span>
     <h4>Título</h4>
   </div>
-  <span>
-    <ClockIcon size={16} />
-  </span>
+
+  {
+    isPlaylist && (
+      <div class="flex">
+        <h4>Álbum</h4>
+      </div>
+    )
+  }
+
+  <div class="w-full flex justify-end">
+    <span
+      class:list={[
+        'flex items-center justify-center h-full',
+        { 'w-[35%]': isPlaylist, 'w-[25%]': !isPlaylist }
+      ]}
+    >
+      <ClockIcon size={16} />
+    </span>
+  </div>
 </header>
