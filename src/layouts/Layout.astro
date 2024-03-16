@@ -3,6 +3,9 @@ import AsideMenu from '@components/AsideMenu.astro'
 import Header from '@components/Header.astro'
 import Footer from '@components/Footer.astro'
 import '@css/fonts.css'
+import Player from '@components/sections/player/Player'
+
+import { ViewTransitions } from 'astro:transitions'
 
 interface Props {
   title: string
@@ -20,6 +23,7 @@ const { title } = Astro.props
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
+    <ViewTransitions />
   </head>
   <body>
     <main id="app" class="relative h-screen p-3 gap-3">
@@ -35,52 +39,54 @@ const { title } = Astro.props
         <Footer />
       </main>
 
-      <footer class="[grid-area:player] min-h-[72px]">player</footer>
+      <footer class="[grid-area:player] min-h-[72px]">
+        <Player client:only transition:name="player" transition:persist />
+      </footer>
     </main>
+    <style is:global>
+      :root {
+        --black: #000;
+        --white: #ffffff;
+      }
+
+      html {
+        font-family:
+          'CircularStd',
+          system-ui,
+          -apple-system,
+          sans-serif;
+        background-color: var(--black);
+        color: var(--white);
+      }
+
+      #app {
+        display: grid;
+        grid-template-areas:
+          'aside main main'
+          'player player player';
+        grid-template-columns: minmax(420px, min-content) 1fr;
+        grid-template-rows: 1fr auto;
+      }
+
+      /* scrollbar styling */
+
+      ::-webkit-scrollbar {
+        background: transparent;
+        width: 7px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background-color: transparent;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background-color: #ffffff4d;
+        border-radius: 16px;
+      }
+
+      ::-webkit-scrollbar-button {
+        display: none;
+      }
+    </style>
   </body>
 </html>
-<style is:global>
-  :root {
-    --black: #000;
-    --white: #ffffff;
-  }
-
-  html {
-    font-family:
-      'CircularStd',
-      system-ui,
-      -apple-system,
-      sans-serif;
-    background-color: var(--black);
-    color: var(--white);
-  }
-
-  #app {
-    display: grid;
-    grid-template-areas:
-      'aside main main'
-      'player player player';
-    grid-template-columns: minmax(420px, min-content) 1fr;
-    grid-template-rows: 1fr auto;
-  }
-
-  /* scrollbar styling */
-
-  ::-webkit-scrollbar {
-    background: transparent;
-    width: 7px;
-  }
-
-  ::-webkit-scrollbar-track {
-    background-color: transparent;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background-color: #ffffff4d;
-    border-radius: 16px;
-  }
-
-  ::-webkit-scrollbar-button {
-    display: none;
-  }
-</style>
