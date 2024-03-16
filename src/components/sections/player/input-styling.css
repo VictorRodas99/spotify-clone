@@ -1,0 +1,22 @@
+:root {
+  --spotify-green: #1ed760;
+  --color-light: #b3b3b3;
+}
+
+input[type='range'] {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* Thumb: webkit */
+input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+#track-progress::-webkit-slider-thumb {
+  width: 12px;
+  height: 12px;
+  background-color: #fff;
+  border-radius: 50%;
+}
