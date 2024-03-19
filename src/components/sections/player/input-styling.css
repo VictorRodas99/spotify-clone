@@ -12,6 +12,7 @@ input[type='range'] {
 input[type='range']::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
+  border: none;
 }
 
 #track-progress::-webkit-slider-thumb {
@@ -19,4 +20,28 @@ input[type='range']::-webkit-slider-thumb {
   height: 12px;
   background-color: #fff;
   border-radius: 50%;
+  visibility: hidden;
+}
+
+#track-progress:hover::-webkit-slider-thumb {
+  visibility: visible;
+}
+
+/* Firefox */
+input[type='range']::-moz-range-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  border: none;
+}
+
+#track-progress::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  background-color: #fff;
+  border-radius: 50%;
+  visibility: hidden;
+}
+
+#track-progress:hover::-moz-range-thumb {
+  visibility: visible;
 }
