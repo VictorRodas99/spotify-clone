@@ -4,7 +4,7 @@ import PauseIcon from '@icons/PauseIcon'
 import PlayIcon from '@icons/PlayIcon'
 import SoundIcon, { VOLUME_MODE } from '@icons/SoundIcon'
 
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import './input-styling.css'
 
 export function MainStateIcon({
@@ -33,12 +33,15 @@ export default function Player() {
 
   // const audioContext = useMemo(() => new AudioContext(), [])
   const trackProgressInputRef = useRef<HTMLInputElement>(null)
-  const updateProgressColorTrace = useCallback((target: HTMLInputElement) => {
-    const currentInputProgress =
-      (Number(target.value) / Number(target.max)) * 100
 
-    target.style.background = `linear-gradient(to right, var(--spotify-green) ${currentInputProgress}%, var(--color-light) ${currentInputProgress}%)`
-  }, [])
+  const [inputProgressHoverStatus, setInputProgressHoverStatus] = useState<
+    'hovered' | 'no-hover'
+  >('no-hover')
+  const inputProgressMainColor = useMemo(() => {
+    return inputProgressHoverStatus === 'hovered'
+      ? `linear-gradient(to right, var(--spotify-green) ${songDuration.progress}%, var(--color-light) ${songDuration.progress}%`
+      : `linear-gradient(to right, #fff ${songDuration.progress}%, var(--color-light) ${songDuration.progress}%`
+  }, [inputProgressHoverStatus, songDuration.progress])
 
   useEffect(() => {
     if (isPlaying) {
@@ -53,8 +56,16 @@ export default function Player() {
       return
     }
 
-    updateProgressColorTrace(trackProgressInputRef.current)
+    trackProgressInputRef.current.style.background = inputProgressMainColor
   }, [songDuration.progress])
+
+  useEffect(() => {
+    if (!trackProgressInputRef.current) {
+      return
+    }
+
+    trackProgressInputRef.current.style.background = inputProgressMainColor
+  }, [inputProgressHoverStatus])
 
   useEffect(() => {
     const updateInputProgress = () => {
@@ -141,7 +152,9 @@ export default function Player() {
             min={0}
             max={100}
             value={songDuration.progress}
-            className="w-[70%] h-1 bg-light rounded-lg"
+            className="w-[70%] h-1 bg-light rounded-lg cursor-pointer"
+            onMouseEnter={() => setInputProgressHoverStatus('hovered')}
+            onMouseLeave={() => setInputProgressHoverStatus('no-hover')}
             onChange={(e) =>
               setSongDuration((prev) => ({
                 ...prev,
@@ -164,7 +177,7 @@ export default function Player() {
           <input
             id="volume"
             type="range"
-            className="bg-white h-1 appearance-none rounded-lg hover:bg-spotify-green"
+            className="bg-light h-1 appearance-none rounded-lg"
           />
         </div>
       </div>
