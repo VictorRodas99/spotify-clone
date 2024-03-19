@@ -19,6 +19,7 @@ import {
   type APIResponseSong,
   type Song
 } from './validations/song.zod'
+import { API_ERROR } from './api-errors'
 
 export const getMainCoincidence = <T>(
   data: T[],
@@ -173,10 +174,19 @@ export async function getArtistByName(name: string) {
   }
 
   const apiResponse = (await response.json()) as APIResponseArtist
-
   const parsedResult = apiResponseArtistSchema.safeParse(apiResponse)
 
   if (!parsedResult.success) {
+    const parsedError = apiResponseNotFoundSchema.safeParse(apiResponse)
+
+    if (parsedError.success) {
+      const { code } = parsedError.data.error
+
+      if (code === API_ERROR.QUOTA_LIMIT_ERROR) {
+        return null
+      }
+    }
+
     throw new Error(`Error parsing the JSON while fetching artist "${name}"`)
   }
 
