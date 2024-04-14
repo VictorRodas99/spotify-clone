@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { DEFAULT_AUDIO_PROGRESS, useAudioTimer } from './use-audio-timer'
+import { changeSongTime } from '../utils/audio-tools'
+import { parseInputValue } from '../utils/parsers'
 
 export default function useAudio({ src }: { src: string }) {
   const [isPlaying, setIsPlaying] = useState(false)
@@ -44,21 +46,13 @@ export default function useAudio({ src }: { src: string }) {
    * Is expected a numeric value to 0 from 100
    */
   const setTrackProgress = (inputValue: string) => {
-    const parsedValue = Number(inputValue)
+    const parsedValue = parseInputValue(inputValue)
 
-    if (isNaN(parsedValue)) {
-      console.warn(
-        `Player progress has a NaN value, given: ${inputValue}, expected a valid number`
-      )
+    if (!parsedValue) {
       return
     }
 
-    if (parsedValue < 0 || parsedValue > 100) {
-      console.warn(
-        'Player process needs a min value of 0 and a max value of 100'
-      )
-    }
-
+    changeSongTime({ currentProgress: parsedValue, audioInstance: audio })
     setSongProgress((prev) => ({ ...prev, percent: parsedValue }))
   }
 
