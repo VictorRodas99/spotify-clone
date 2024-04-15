@@ -60,7 +60,7 @@ export default function useAudio({ src }: { src: string }) {
     audio.volume = volume / 100
   }, [volume])
 
-  const playerHandler = () => {
+  const toggleMusic = () => {
     if (audio && audio.readyState >= audio.HAVE_CURRENT_DATA) {
       setIsPlaying(!isPlaying)
     }
@@ -69,7 +69,7 @@ export default function useAudio({ src }: { src: string }) {
   /**
    * Is expected a numeric value to 0 from 100
    */
-  const setTrackProgress = (inputValue: string) => {
+  const updateSongTime = (inputValue: string) => {
     const parsedValue = parseInputValue(inputValue)
 
     if (!parsedValue) {
@@ -89,12 +89,14 @@ export default function useAudio({ src }: { src: string }) {
   }, [])
 
   return {
-    audio,
-    songProgress,
-    isPlaying,
-    volume,
-    playerHandler,
-    setTrackProgress,
-    updateVolume
+    song: {
+      audio,
+      progress: songProgress,
+      volume,
+      isPlaying
+    },
+    updateVolume,
+    updateSongTime,
+    toggleMusic
   }
 }

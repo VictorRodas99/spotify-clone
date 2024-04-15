@@ -16,14 +16,7 @@ export function MainStateIcon({
 }
 
 export default function Player() {
-  const {
-    songProgress,
-    playerHandler,
-    isPlaying,
-    volume,
-    setTrackProgress,
-    updateVolume
-  } = useAudio({
+  const { song, updateSongTime, updateVolume, toggleMusic } = useAudio({
     src: 'https://cdns-preview-1.dzcdn.net/stream/c-10d23ec5bf25dd292accac4d9ae240e6-4.mp3'
   })
 
@@ -31,13 +24,13 @@ export default function Player() {
     inputRef: trackProgressInputRef,
     setHoverColor: setTrackInputHover,
     setDefaultColor: setTrackInputDefaultColor
-  } = useInputRange({ value: songProgress.percent })
+  } = useInputRange({ value: song.progress.percent })
 
   const {
     inputRef: volumeInputRef,
     setHoverColor: setVolumeInputHover,
     setDefaultColor: setVolumeInputDefaultColor
-  } = useInputRange({ value: volume })
+  } = useInputRange({ value: song.volume })
 
   return (
     <section className="grid grid-cols-3 gap-2 p-2">
@@ -54,9 +47,9 @@ export default function Player() {
           </button>
           <button className="rounded-full bg-white text-black w-8 h-8 hover:scale-105">
             <MainStateIcon
-              isPlaying={isPlaying}
+              isPlaying={song.isPlaying}
               className="m-auto"
-              onClick={playerHandler}
+              onClick={toggleMusic}
             />
           </button>
           <button className="text-light hover:text-white">
@@ -66,7 +59,7 @@ export default function Player() {
         <div className="group flex justify-center items-center w-full">
           {/* advanced media player controls */}
           <span className="w-[15%] text-[0.75rem] text-light text-center">
-            {songProgress.current}
+            {song.progress.current}
           </span>
 
           <input
@@ -75,14 +68,14 @@ export default function Player() {
             type="range"
             min={0}
             max={100}
-            value={songProgress.percent}
+            value={song.progress.percent}
             className="w-[70%] h-1 bg-light rounded-lg cursor-pointer"
             onMouseEnter={setTrackInputHover}
             onMouseLeave={setTrackInputDefaultColor}
-            onChange={(e) => setTrackProgress(e.target.value)}
+            onChange={(e) => updateSongTime(e.target.value)}
           />
           <span className="w-[15%] text-[0.75rem] text-light text-center">
-            {songProgress.total}
+            {song.progress.total}
           </span>
         </div>
       </div>
@@ -90,7 +83,7 @@ export default function Player() {
       <div className="flex items-center justify-center">
         {/* volume, lyrics, list, etc */}
         <div className="flex gap-2 items-center">
-          <SoundIcon volume={volume} />
+          <SoundIcon volume={song.volume} />
 
           <input
             id="volume"
@@ -98,7 +91,7 @@ export default function Player() {
             type="range"
             min={0}
             max={100}
-            value={volume}
+            value={song.volume}
             onMouseEnter={setVolumeInputHover}
             onMouseLeave={setVolumeInputDefaultColor}
             className="bg-light h-1 rounded-lg"
