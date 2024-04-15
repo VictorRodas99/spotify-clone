@@ -6,7 +6,8 @@ import SoundIcon from '@icons/SoundIcon'
 
 import './input-styling.css'
 import useAudio from './hooks/use-audio'
-import useInputRange from './hooks/use-input-range-colors'
+import SongProgressInput from './SongProgressInput'
+import VolumeInput from './VolumeInput'
 
 export function MainStateIcon({
   isPlaying,
@@ -19,18 +20,6 @@ export default function Player() {
   const { song, updateSongTime, updateVolume, toggleMusic } = useAudio({
     src: 'https://cdns-preview-1.dzcdn.net/stream/c-10d23ec5bf25dd292accac4d9ae240e6-4.mp3'
   })
-
-  const {
-    inputRef: trackProgressInputRef,
-    setHoverColor: setTrackInputHover,
-    setDefaultColor: setTrackInputDefaultColor
-  } = useInputRange({ value: song.progress.percent })
-
-  const {
-    inputRef: volumeInputRef,
-    setHoverColor: setVolumeInputHover,
-    setDefaultColor: setVolumeInputDefaultColor
-  } = useInputRange({ value: song.volume })
 
   return (
     <section className="grid grid-cols-3 gap-2 p-2">
@@ -62,18 +51,11 @@ export default function Player() {
             {song.progress.current}
           </span>
 
-          <input
-            id="track-progress"
-            ref={trackProgressInputRef}
-            type="range"
-            min={0}
-            max={100}
-            value={song.progress.percent}
-            className="w-[70%] h-1 bg-light rounded-lg cursor-pointer"
-            onMouseEnter={setTrackInputHover}
-            onMouseLeave={setTrackInputDefaultColor}
-            onChange={(e) => updateSongTime(e.target.value)}
+          <SongProgressInput
+            songProgress={song.progress}
+            updateSongTime={updateSongTime}
           />
+
           <span className="w-[15%] text-[0.75rem] text-light text-center">
             {song.progress.total}
           </span>
@@ -84,19 +66,7 @@ export default function Player() {
         {/* volume, lyrics, list, etc */}
         <div className="flex gap-2 items-center">
           <SoundIcon volume={song.volume} />
-
-          <input
-            id="volume"
-            ref={volumeInputRef}
-            type="range"
-            min={0}
-            max={100}
-            value={song.volume}
-            onMouseEnter={setVolumeInputHover}
-            onMouseLeave={setVolumeInputDefaultColor}
-            className="bg-light h-1 rounded-lg"
-            onChange={(e) => updateVolume(e.target.value)}
-          />
+          <VolumeInput volume={song.volume} updateVolume={updateVolume} />
         </div>
       </div>
     </section>
