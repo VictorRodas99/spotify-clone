@@ -1,5 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
-import type useAudio from './use-audio'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 const HOVER_STATUS = {
   noHover: 'no-hover',
@@ -15,40 +14,36 @@ const getProgressColorCSS = (status: HoverStates, width: number) => {
   return `linear-gradient(to right, ${mainColor} ${width}%, var(--color-light) ${width}%`
 }
 
-export default function useTrackProgress({
-  songProgress
-}: {
-  songProgress: ReturnType<typeof useAudio>['songProgress']
-}) {
-  const trackProgressInputRef = useRef<HTMLInputElement>(null)
+export default function useInputRange({ value }: { value: number }) {
+  const inputRef = useRef<HTMLInputElement>(null)
 
   const [inputHoverStatus, setInputProgressHoverStatus] = useState<HoverStates>(
     HOVER_STATUS.noHover
   )
 
   const inputProgressMainColor = useMemo(
-    () => getProgressColorCSS(inputHoverStatus, songProgress.percent),
-    [inputHoverStatus, songProgress.percent]
+    () => getProgressColorCSS(inputHoverStatus, value),
+    [inputHoverStatus, value]
   )
 
-  const setHoverColor = () => {
+  const setHoverColor = useCallback(() => {
     setInputProgressHoverStatus(HOVER_STATUS.hovered)
-  }
+  }, [])
 
-  const setDefaultColor = () => {
+  const setDefaultColor = useCallback(() => {
     setInputProgressHoverStatus(HOVER_STATUS.noHover)
-  }
+  }, [])
 
   useEffect(() => {
-    const { current: input } = trackProgressInputRef
+    const { current: input } = inputRef
 
     if (input) {
       input.style.background = inputProgressMainColor
     }
-  }, [songProgress.percent])
+  }, [value])
 
   useEffect(() => {
-    const { current: input } = trackProgressInputRef
+    const { current: input } = inputRef
 
     if (input) {
       input.style.background = inputProgressMainColor
@@ -58,6 +53,6 @@ export default function useTrackProgress({
   return {
     setHoverColor,
     setDefaultColor,
-    trackProgressInputRef
+    inputRef
   }
 }
