@@ -24,6 +24,23 @@ export default function useAudio({ src }: { src: string }) {
   }, [isPlaying])
 
   useEffect(() => {
+    const toggleMusic = (event: KeyboardEvent) => {
+      const MAIN_KEY_TRIGGER = ' '
+      const { key } = event
+
+      if (key === MAIN_KEY_TRIGGER) {
+        setIsPlaying((prev) => !prev)
+      }
+    }
+
+    window.addEventListener('keydown', toggleMusic)
+
+    return () => {
+      window.removeEventListener('keydown', toggleMusic)
+    }
+  }, [])
+
+  useEffect(() => {
     const resetPlayer = () => {
       setSongProgress((prev) => ({ ...prev, ...DEFAULT_AUDIO_PROGRESS }))
       setIsPlaying(false)
