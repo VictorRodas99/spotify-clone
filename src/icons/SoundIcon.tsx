@@ -19,7 +19,7 @@ export default function SoundIcon({
     )
   }
 
-  if (volume >= VOLUME_MODE.no) {
+  if (volume === VOLUME_MODE.no) {
     return <NoVolumeSound {...props} />
   }
 
