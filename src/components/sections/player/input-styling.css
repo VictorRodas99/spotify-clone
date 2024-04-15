@@ -3,19 +3,22 @@
   --color-light: #b3b3b3;
 }
 
-input[type='range'] {
+#track-progress,
+#volume {
   -webkit-appearance: none;
   appearance: none;
 }
 
 /* Thumb: webkit */
-input[type='range']::-webkit-slider-thumb {
+#track-progress::-webkit-slider-thumb,
+#volume::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
   border: none;
 }
 
-#track-progress::-webkit-slider-thumb {
+#track-progress::-webkit-slider-thumb,
+#volume::-webkit-slider-thumb {
   width: 12px;
   height: 12px;
   background-color: #fff;
@@ -23,18 +26,21 @@ input[type='range']::-webkit-slider-thumb {
   visibility: hidden;
 }
 
-#track-progress:hover::-webkit-slider-thumb {
+#track-progress:hover::-webkit-slider-thumb,
+#volume:hover::-webkit-slider-thumb {
   visibility: visible;
 }
 
 /* Firefox */
-input[type='range']::-moz-range-thumb {
+#track-progress::-moz-range-thumb,
+#volume::-moz-range-thumb {
   -webkit-appearance: none;
   appearance: none;
   border: none;
 }
 
-#track-progress::-moz-range-thumb {
+#track-progress::-moz-range-thumb,
+#volume::-moz-range-thumb {
   width: 12px;
   height: 12px;
   background-color: #fff;
@@ -42,6 +48,7 @@ input[type='range']::-moz-range-thumb {
   visibility: hidden;
 }
 
-#track-progress:hover::-moz-range-thumb {
+#track-progress:hover::-moz-range-thumb,
+#volume::-moz-range-thumb {
   visibility: visible;
 }
