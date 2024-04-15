@@ -1,10 +1,13 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { DEFAULT_AUDIO_PROGRESS, useAudioTimer } from './use-audio-timer'
 import { changeSongTime } from '../utils/audio-tools'
 import { parseInputValue } from '../utils/parsers'
 
+const DEFAULT_VOLUME = 50
+
 export default function useAudio({ src }: { src: string }) {
   const [isPlaying, setIsPlaying] = useState(false)
+  const [volume, setVolume] = useState(DEFAULT_VOLUME)
 
   if (typeof src !== 'string') {
     console.error(`AUDIO ERROR: source not loaded, given: ${src}`)
@@ -53,6 +56,10 @@ export default function useAudio({ src }: { src: string }) {
     }
   }, [audio])
 
+  useEffect(() => {
+    audio.volume = volume / 100
+  }, [volume])
+
   const playerHandler = () => {
     if (audio && audio.readyState >= audio.HAVE_CURRENT_DATA) {
       setIsPlaying(!isPlaying)
@@ -73,11 +80,21 @@ export default function useAudio({ src }: { src: string }) {
     setSongProgress((prev) => ({ ...prev, percent: parsedValue }))
   }
 
+  const updateVolume = useCallback((inputValue: string) => {
+    const parsedValue = parseInputValue(inputValue)
+
+    if (parsedValue) {
+      setVolume(parsedValue)
+    }
+  }, [])
+
   return {
     audio,
     songProgress,
     isPlaying,
+    volume,
     playerHandler,
-    setTrackProgress
+    setTrackProgress,
+    updateVolume
   }
 }

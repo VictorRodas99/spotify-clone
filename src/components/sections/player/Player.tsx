@@ -2,11 +2,11 @@ import ForwardLeftIcon from '@icons/ForwardLeft'
 import ForwardRightIcon from '@icons/ForwardRight'
 import PauseIcon from '@icons/PauseIcon'
 import PlayIcon from '@icons/PlayIcon'
-import SoundIcon, { VOLUME_MODE } from '@icons/SoundIcon'
+import SoundIcon from '@icons/SoundIcon'
 
 import './input-styling.css'
 import useAudio from './hooks/use-audio'
-import useTrackProgress from './hooks/use-track-progress'
+import useInputRange from './hooks/use-input-range-colors'
 
 export function MainStateIcon({
   isPlaying,
@@ -16,13 +16,28 @@ export function MainStateIcon({
 }
 
 export default function Player() {
-  const { songProgress, playerHandler, isPlaying, setTrackProgress } = useAudio(
-    {
-      src: 'https://cdns-preview-1.dzcdn.net/stream/c-10d23ec5bf25dd292accac4d9ae240e6-4.mp3'
-    }
-  )
-  const { trackProgressInputRef, setHoverColor, setDefaultColor } =
-    useTrackProgress({ songProgress })
+  const {
+    songProgress,
+    playerHandler,
+    isPlaying,
+    volume,
+    setTrackProgress,
+    updateVolume
+  } = useAudio({
+    src: 'https://cdns-preview-1.dzcdn.net/stream/c-10d23ec5bf25dd292accac4d9ae240e6-4.mp3'
+  })
+
+  const {
+    inputRef: trackProgressInputRef,
+    setHoverColor: setTrackInputHover,
+    setDefaultColor: setTrackInputDefaultColor
+  } = useInputRange({ value: songProgress.percent })
+
+  const {
+    inputRef: volumeInputRef,
+    setHoverColor: setVolumeInputHover,
+    setDefaultColor: setVolumeInputDefaultColor
+  } = useInputRange({ value: volume })
 
   return (
     <section className="grid grid-cols-3 gap-2 p-2">
@@ -62,8 +77,8 @@ export default function Player() {
             max={100}
             value={songProgress.percent}
             className="w-[70%] h-1 bg-light rounded-lg cursor-pointer"
-            onMouseEnter={setHoverColor}
-            onMouseLeave={setDefaultColor}
+            onMouseEnter={setTrackInputHover}
+            onMouseLeave={setTrackInputDefaultColor}
             onChange={(e) => setTrackProgress(e.target.value)}
           />
           <span className="w-[15%] text-[0.75rem] text-light text-center">
@@ -75,13 +90,19 @@ export default function Player() {
       <div className="flex items-center justify-center">
         {/* volume, lyrics, list, etc */}
         <div className="flex gap-2 items-center">
-          <SoundIcon volume={VOLUME_MODE.high} />
+          <SoundIcon volume={volume} />
 
-          {/* TODO: style this */}
           <input
             id="volume"
+            ref={volumeInputRef}
             type="range"
-            className="bg-light h-1 appearance-none rounded-lg"
+            min={0}
+            max={100}
+            value={volume}
+            onMouseEnter={setVolumeInputHover}
+            onMouseLeave={setVolumeInputDefaultColor}
+            className="bg-light h-1 rounded-lg"
+            onChange={(e) => updateVolume(e.target.value)}
           />
         </div>
       </div>
