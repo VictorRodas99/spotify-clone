@@ -1,37 +1,39 @@
 import type IconProps from './types/icon-generic-type'
 
 export const VOLUME_MODE = {
-  high: 'high',
-  mid: 'mid',
-  low: 'low',
-  no: 'no'
+  high: 70,
+  mid: 40,
+  low: 20,
+  no: 1
 } as const
 
 export default function SoundIcon({
   volume,
   ...props
-}: IconProps & { volume: (typeof VOLUME_MODE)[keyof typeof VOLUME_MODE] }) {
-  if (volume === VOLUME_MODE.high) {
-    return <HighVolumeIcon {...props} />
+}: IconProps & { volume: number }) {
+  if (typeof volume !== 'number' || isNaN(volume)) {
+    throw new Error(
+      `Invalid volume mode, given ${volume}, expected this range of volumes: ${Object.values(
+        VOLUME_MODE
+      ).join(', ')}`
+    )
   }
 
-  if (volume === VOLUME_MODE.mid) {
-    return <MidVolumeIcon {...props} />
-  }
-
-  if (volume === VOLUME_MODE.low) {
-    return <LowVolumeIcon {...props} />
-  }
-
-  if (volume === VOLUME_MODE.no) {
+  if (volume >= VOLUME_MODE.no) {
     return <NoVolumeSound {...props} />
   }
 
-  throw new Error(
-    `Invalid volume mode, given ${volume}, expected: ${Object.values(
-      VOLUME_MODE
-    ).join(', ')}`
-  )
+  if (volume >= VOLUME_MODE.high) {
+    return <HighVolumeIcon {...props} />
+  }
+
+  if (volume >= VOLUME_MODE.mid) {
+    return <MidVolumeIcon {...props} />
+  }
+
+  if (volume <= VOLUME_MODE.low || volume < VOLUME_MODE.mid) {
+    return <LowVolumeIcon {...props} />
+  }
 }
 
 export function HighVolumeIcon({ className, size, ...props }: IconProps) {
@@ -93,14 +95,12 @@ export function NoVolumeSound({ className, size, ...props }: IconProps) {
   return (
     <svg
       role="presentation"
-      aria-label="no-volumen"
+      aria-label="no-volume"
       aria-hidden="true"
-      id="volume-icon"
       viewBox="0 0 16 16"
-      fill="currentColor"
       width={size ?? 16}
       height={size ?? 16}
-      className={className}
+      fill="currentColor"
       {...props}
     >
       <path d="M13.86 5.47a.75.75 0 0 0-1.061 0l-1.47 1.47-1.47-1.47A.75.75 0 0 0 8.8 6.53L10.269 8l-1.47 1.47a.75.75 0 1 0 1.06 1.06l1.47-1.47 1.47 1.47a.75.75 0 0 0 1.06-1.06L12.39 8l1.47-1.47a.75.75 0 0 0 0-1.06z"></path>
