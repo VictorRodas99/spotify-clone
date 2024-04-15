@@ -16,8 +16,6 @@ export function MainStateIcon({
 }
 
 export default function Player() {
-  // TODO: register an event to play the music if the space key is pressed
-
   const { songProgress, playerHandler, isPlaying, setTrackProgress } = useAudio(
     {
       src: 'https://cdns-preview-1.dzcdn.net/stream/c-10d23ec5bf25dd292accac4d9ae240e6-4.mp3'
